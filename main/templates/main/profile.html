@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Profile- Hospital Booking App
+{% endblock %}
+
+
+{% block nav %}
+<div class="naviglogin">
+    <a href="/dashboard">dashboard</a>
+    <a href="/dashboard">Back</a>
+    <a href="/logout">LogOut</a>
+    
+    
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="card" style="width: 22rem;margin:0 auto;top: 20px;">
+    <div class="card-body">
+      <h5 class="card-title">Profile</h5><hr />
+      <p class="card-text">Username: {{user.username}} </p>
+      <p class="card-text">UserMail: {{user.email}} </p>
+    </div>
+</div>
+{% endblock %}
+<a href="#" class="btn btn-primary">Go somewhere</a>

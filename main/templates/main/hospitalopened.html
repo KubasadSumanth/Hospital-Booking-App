@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% block title %}Dashboard- Hospital Booking App
+{% endblock %}
+
+
+{% block nav %}
+<div class="naviglogin">
+    <a href="/dashboard">Back</a>
+    <a href="/profile">Profile</a>
+    <a href="/logout">LogOut</a>
+    
+    
+</div>
+{% endblock %}
+
+{% block content %}<br/>
+<div class="mt-2">
+                
+    <div class="card" style="width: 80%;border: olive 2px solid;margin:0 auto;">
+        <div class="card-body">
+          <h4 class="card-title">{{name}}</h4><hr />
+          <h4 class="card-title">Specialities :- {{name.specialities}}</h4><hr />
+          <h4 class="card-title">Slots Available :- {{name.noOfSeats}}</h4><hr />
+          <h4 class="card-title">Doctors Available :- {{name.doctorName}}</h4><hr />
+          
+          {% if name.noOfSeats == 0 %}
+          <p>All Slots are booked </p>
+          {%else%}
+        <form action="book/appt" method="post">
+            {% csrf_token %}
+            <h5>Book Appointment Here</h5>
+            <input type="text" name="hname" hidden value={{name.hospitalName}}><br/><br/>
+            <input type="text" name="username" hidden value={{user.username}}><br/><br/>
+            <input type="text" name="email" hidden value={{user.email}}><br/><br/>
+
+            <input type="text" name="consulttext" placeholder="Consultancy needed on"><br/><br/>
+            <input type="text" name="doctorName" placeholder="Doctor Name"><br/><br/>
+            <input type="submit" value="Book Appointment">
+        </form>
+    
+        {%endif%}
+        
+        </div>
+    </div>
+    </div>
+{% endblock %}

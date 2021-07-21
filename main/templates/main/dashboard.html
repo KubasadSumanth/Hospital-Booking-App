@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: large;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      tr:nth-child(1) {
+        border-bottom: 2px solid olive;
+      }
+    </style>
+  </head>
+  <body>
+    {% extends 'main/base.html' %} {% block title %}Dashboard- Hospital Booking
+    App {% endblock %} {% block nav %}
+    <div class="naviglogin">
+      <a href="/profile">Profile</a>
+      <a href="/dashboard">Back</a>
+      <a href="/logout">LogOut</a>
+    </div>
+    {% endblock %} {% block content %}<br />
+    <h3 style="text-align: center">Welcome {{user.username}}</h3>
+    <br />
+
+
+
+    {% if user.is_superuser %}
+
+    <div name="content">
+      <div class="row justify-content-center">
+        <div class="col-7">
+          <div class="mt-2" style="border: olive 2px solid">
+            <table>
+              <tr>
+                <th>Hospital Name</th>
+                <th>Specialities</th>
+                <th>Number of Seats</th>
+              </tr>
+              {% for h in hs%}
+              <tr>
+                <td>{{h.hospitalName}}</td>
+                <td>{{h.specialities}}</td>
+                <td>{{h.noOfSeats}}</td>
+              </tr>
+              {%endfor%}
+            </table>
+          </div>
+          <br />
+          <br />
+
+          <div
+            class="mt-2"
+            style="border: olive 2px solid; text-align: justify"
+          >
+            <h5 class="card-title" style="padding: 10px; margin-left: 30%">
+              Appointments Booked
+            </h5>
+            <hr />
+            {% for h in bookings%}
+            <div style="margin-left: 20%">
+              <p>Hospital name - {{h.hospitalName}}</p>
+              <p>Patient name - {{h.username}}</p>
+              <p>email - {{h.email}}</p>
+              <p>consult needed on - {{h.consulttext}}</p>
+              <p>doctorName - {{h.doctorName}}</p>
+              <form action="patient/casestudy" method="post">
+                {% csrf_token %}
+                <input
+                  type="text"
+                  name="hospitalName"
+                  hidden
+                  value="{{h.hospitalName}}"
+                /><br /><br />
+                <input
+                  type="text"
+                  name="username"
+                  hidden
+                  value="{{h.username}}"
+                /><br /><br />
+                <input
+                  type="text"
+                  name="casedata"
+                  placeholder="Case Study Data/Result"
+                /><br /><br />
+                <input type="submit" value="Close Appointment" />
+              </form>
+            </div>
+            <br />
+            <hr />
+
+            {%endfor%}
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="mt-2" style="border: olive 2px solid">
+            <div class="card" style="width: 100%; margin: 0 auto">
+              <div class="card-body">
+                <h5 class="card-title">Create a Hospital</h5>
+                <hr />
+
+                <form action="" method="post">
+                  {% csrf_token %} {{ form }}<br />
+                  <input type="submit" value="Submit" />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+
+    <div name="content">
+      <div class="row justify-content-center">
+        <div class="col-7">
+          <div class="mt-2" style="border: olive 2px solid">
+            <table>
+              <tr>
+                <th>Hospital Name</th>
+                <th>Specialities</th>
+                <th>Number of Seats</th>
+              </tr>
+              {% for h in hs%}
+              <tr>
+                <td>
+                  <a style="color: black" href="{{h.hospitalName}}"
+                    >{{h.hospitalName}}</a
+                  >
+                </td>
+                <td>{{h.specialities}}</td>
+                <td>{{h.noOfSeats}}</td>
+              </tr>
+              {%endfor%}
+            </table>
+          </div>
+        </div>
+        <div class="col-4">
+
+
+
+          <div class="mt-2" style="border: olive 2px solid">
+            <div class="card" style="width: 100%; margin: 0 auto">
+              <div class="card-body">
+                <h5 class="card-title">Live Monitoring</h5>
+                <hr />
+                <p class="card-text" style="font-size: large">
+                  BPM Data : {{bpm}}
+                </p>
+                <p class="card-text" style="font-size: large">
+                  SPO Data : {{spo}}
+                </p>
+                <p class="card-text" style="font-size: large">
+                  Temperature Data:  {{temp}}<br />
+                  
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="mt-2" style="border: olive 2px solid">
+            <div class="card" style="width: 100%; margin: 0 auto">
+              <div class="card-body">
+                <h5 class="card-title">Case History</h5>
+                <hr />
+                <p class="card-text" style="font-size: large">
+                  Patient Name: {{user.username}}
+                </p>
+                <p class="card-text" style="font-size: large">
+                  Patient Mail: {{user.email}}
+                </p>
+                <p class="card-text" style="font-size: large">
+                  History Data: <br />
+                  {% for h in report%} {{h}}<br />
+                  {%endfor%}
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+          
+
+
+
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+
+    <script>
+      //alert('Welcome');
+    </script>
+    {% endblock %} {% block data %}
+
+    <div class="naviglogin">
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+
+      <a href="/home">Home</a>
+      <a href="/create">Create</a>
+      <a href="/view">View</a>
+    </div>
+    {% endblock %}
+  </body>
+</html>
